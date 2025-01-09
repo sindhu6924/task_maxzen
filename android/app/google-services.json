@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "628793479106",
+    "project_id": "task-maxzen",
+    "storage_bucket": "task-maxzen.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:628793479106:android:441dd23e6ebfa5c2f5905b",
+        "android_client_info": {
+          "package_name": "com.example.task_maxzen"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_8qrEc_VIUH_k47CAGYvDLVYelrwGrVo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
