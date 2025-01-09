@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -5,12 +6,15 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:task_maxzen/login.dart';
 
 void main() {
+
   Firebase.initializeApp(
       options: FirebaseOptions(
           apiKey: "AIzaSyAkc9lwXXJs39QJoI31nGwLbBeBbSjbFYA",
       appId: "1:628793479106:web:cf39c247c3738442f5905b",
       messagingSenderId: "628793479106",
       projectId: "task-maxzen"));
+  WidgetsFlutterBinding.ensureInitialized();
+   Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -38,22 +42,27 @@ class log extends StatefulWidget {
 class _logState extends State<log> {
   TextEditingController emails = TextEditingController();
   TextEditingController passwords = TextEditingController();
+
   final _formkey = GlobalKey<FormState>();
   var _obscure = true;
+
   Future login(String Email,String Password)async{
     final FirebaseAuth auth=FirebaseAuth.instance;
     try{
       auth.signInWithEmailAndPassword(email: Email, password: Password).then((value){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>loggedin(texts:emails.text.trim().toString())));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>LoggedIn(email: emails.text.trim(),texts:emails.text.trim().toString()
+             )));
       }).onError((error, stackTrace) {Util().toast("Invalid Credentials");});
     }catch(err) {
       throw Exception(err);
     }
   }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff2C5F2D),
+      backgroundColor: Color(0xFF2C3E50),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -97,7 +106,7 @@ class _logState extends State<log> {
                                         icon: const Icon(
                                           Icons.email,
                                           color:
-                                          Color.fromARGB(255, 0, 141, 89),
+                                          Color(0xFF2C3E50),
                                         )),
                                   )),
                               Container(
@@ -133,7 +142,7 @@ class _logState extends State<log> {
                                         icon: const Icon(
                                           Icons.lock,
                                           color:
-                                          Color.fromARGB(255, 0, 141, 89),
+                                          Color(0xFF2C3E50),
                                         )),
                                   )),
                               Container(
@@ -163,11 +172,12 @@ class _logState extends State<log> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       CircleAvatar(
-                        radius: 40.0,
-                        backgroundColor: Color(0xFF6cbd3a),
+                        radius: 38.0,
+                        backgroundColor: Color(0xFF2C3E50),
                         child: Icon(
+                          size: 32,
                           Icons.person,
-                          color: const Color(0xFF062525),
+                          color: Colors.white,
                         ),
                       ),
                     ],
@@ -178,11 +188,14 @@ class _logState extends State<log> {
                       alignment: Alignment.bottomCenter,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
+                          minimumSize: Size(26, 48),
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(40.0)),
-                          backgroundColor: Color.fromARGB(255, 0, 141, 89),
+
+                              borderRadius: BorderRadius.circular(32.0)),
+                          backgroundColor: Color(0xFFECF0F1),
                         ),
                         onPressed: () {
+
                           if (_formkey.currentState!.validate()){
                             setState(() {
                               login(emails.text.trim(), passwords.text.trim());
@@ -191,17 +204,14 @@ class _logState extends State<log> {
                           }
                             },
                         child: const Text("Login",
-                            style: TextStyle(color: const Color(0xFF062525))),
+                            style: TextStyle(color:Color(0xFF2C3E50),fontSize: 18,fontWeight: FontWeight.bold,fontFamily: 'Roboto')),
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[],
-            )
+
           ],
         ),
       ),
