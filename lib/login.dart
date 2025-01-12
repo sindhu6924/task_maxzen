@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -106,7 +108,7 @@ class _LoggedInState extends State<LoggedIn> {
   }
 
 
-
+  File? _selectedImage;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,6 +128,17 @@ class _LoggedInState extends State<LoggedIn> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            ElevatedButton(
+              onPressed: pickImageFromCamera,
+              child: const Text('Upload from Camera'),
+            ),
+            const SizedBox(height: 20),
+            if (_selectedImage != null)
+              Image.file(
+                _selectedImage!,
+                width: 200,
+                height: 200,
+              ),
             Padding(
               padding: const EdgeInsets.all(28.0),
               child: TextField(
@@ -257,7 +270,42 @@ class _LoggedInState extends State<LoggedIn> {
       ),
     );
   }
+  Future<void> pickImageFromCamera() async {
+    final pickedImage = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (pickedImage == null) return;
 
+    setState(() {
+      _selectedImage = File(pickedImage.path);
+    });
+
+    await uploadImageToSupabase();
+  }
+
+  Future<void> uploadImageToSupabase() async {
+    if (_selectedImage == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No image selected')),
+      );
+      return;
+    }
+
+    try {
+      final filename = DateTime.now().millisecondsSinceEpoch.toString();
+      final path = 'uploads/$filename.jpg';
+
+      await Supabase.instance.client.storage
+          .from('image')
+          .upload(path, _selectedImage!);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Image uploaded successfully: $path')),
+      );
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Image upload failed: $error')),
+      );
+    }
+  }
   Future<void> selectDate(BuildContext context) async {
     DateTime? picked = await showDatePicker(
       context: context,
