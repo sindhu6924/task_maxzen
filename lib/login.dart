@@ -262,7 +262,7 @@ class _LoggedInState extends State<LoggedIn> {
     DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
+      firstDate: DateTime(2025),
       lastDate: DateTime.now(),
     );
     if (picked != null) {

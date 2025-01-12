@@ -3,9 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:task_maxzen/login.dart';
 
-void main() {
+void main() async{
+  await Supabase.initialize(
+    url: "https://sthnbpntcbacbynuliq.supabase.co", // Corrected URL
+    anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0aG5icG50Y2JhY2J5bnVsaWxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY1MTc3NTAsImV4cCI6MjA1MjA5Mzc1MH0.yiVcH2Jei0v85IFv-7uqcJHdXFYEm94PpsCF1iaKus4",
+  );
 
   Firebase.initializeApp(
       options: FirebaseOptions(
