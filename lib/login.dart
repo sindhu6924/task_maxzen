@@ -111,6 +111,7 @@ class _LoggedInState extends State<LoggedIn> {
 
 
   File? _selectedImage;
+  bool _isImageSelected = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,6 +146,7 @@ class _LoggedInState extends State<LoggedIn> {
               padding: const EdgeInsets.all(28.0),
               child: TextField(
                 controller: dateController,
+                enabled: _isImageSelected,
                 decoration: InputDecoration(
                   filled: true,
                   labelText: 'Select Date',
@@ -278,6 +280,7 @@ class _LoggedInState extends State<LoggedIn> {
 
     setState(() {
       _selectedImage = File(pickedImage.path);
+      _isImageSelected = true;
     });
 
     await uploadImageToSupabase();
