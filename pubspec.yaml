@@ -40,6 +40,8 @@ dependencies:
   shared_preferences:
   supabase_flutter:
   image_picker:
+  firebase_storage:
+
 
 
 
