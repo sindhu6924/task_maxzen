@@ -109,10 +109,12 @@ class _LoggedInState extends State<LoggedIn> {
         );
         return;
       }
+      String currentTime = DateFormat('hh:mm a').format(DateTime.now());
       await db.collection('Attendance').add({
         'Date': dates,
         'Email': widget.emails,
         'Attendance': status,
+        'Time':currentTime,
         'imagepath':_uploadedImageUrl,
       });
 
@@ -135,36 +137,6 @@ class _LoggedInState extends State<LoggedIn> {
       );
     }
   }
-
-
-  Future<void> addToData(String date, String email, String attendance) async {
-    try {
-      final snapshot = await db
-          .collection('Attendance')
-          .where('Date', isEqualTo: date)
-          .where('Email', isEqualTo: email)
-          .where('Attendance', isEqualTo: attendance)
-          .get();
-
-      if (snapshot.docs.isNotEmpty) {
-        print("Duplicate record exists. Not adding to Firestore.");
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Attendance already marked for this status.")),
-        );
-        return;
-      }
-
-      await db.collection('Attendance').add({
-        "Date": date,
-        "Email": email,
-        "Attendance": attendance,
-      });
-      print("Data added successfully");
-    } catch (e) {
-      print("Error adding data: $e");
-    }
-  }
-
 
 
 
@@ -245,11 +217,11 @@ class _LoggedInState extends State<LoggedIn> {
                             ),
                             onPressed: () {
                               if (!isAttendanceMarkedin) {
-                                pickImageFromCamerain(); // Handle Check-In case
+                                pickImageFromCamerain();
                               } else if (!isAttendanceMarkedout && isAttendanceMarkedin) {
-                                pickImageFromCameraout(); // Handle Check-Out case
+                                pickImageFromCameraout();
                               } else {
-                                // Optionally, show a message if neither action is allowed
+
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(content: Text('Attendance already marked for today')),
                                 );
@@ -274,16 +246,17 @@ class _LoggedInState extends State<LoggedIn> {
                                       backgroundColor: Color(0xFF2C3E50),
                                       minimumSize: Size(40, 35)
                                   ),
-                                  onPressed: isAttendanceMarkedin || isCheckInButtonDisabled ||!_isImageSelected
+                                  onPressed: isAttendanceMarkedin || isCheckInButtonDisabled
+                                      ||!_isImageSelected
                                       ? null // Disable button if already marked or within 5 seconds
                                       : () async {
                                     setState(() {
-                                      isCheckInButtonDisabled = true; // Disable the button
+                                      isCheckInButtonDisabled = true;
                                     });
 
                                     await markAttendance('Check_In', 'Check_In');
 
-                                    // Re-enable the button after 5 seconds
+
                                     Future.delayed(Duration(seconds: 5), () {
                                       setState(() {
                                         isCheckInButtonDisabled = false;
@@ -380,7 +353,7 @@ class _LoggedInState extends State<LoggedIn> {
       final publicURL = Supabase.instance.client.storage.from('image').getPublicUrl(path);
 
       setState(() {
-        _uploadedImageUrl = publicURL; // Save the uploaded image URL
+        _uploadedImageUrl = publicURL;
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -463,6 +436,7 @@ class _attendanceState extends State<attendance> {
                           title: Column(
                             children: [
                               Text('Date: ${data['Date']}'),
+                              Text('Time:${data['Time']}')
                             ],
                           ),
                           subtitle: Center(child: Text('Attendance: ${data['Attendance']}')),

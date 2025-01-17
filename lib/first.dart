@@ -51,6 +51,7 @@ class _first_pageState extends State<first_page> {
       ),
     ) ?? false;
   }
+  
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -80,9 +81,9 @@ class _first_pageState extends State<first_page> {
                       SizedBox(
                         height: 20,
                       ),
-                      Text('           Welcome,sindhu \n Please mark your attendance.',style: TextStyle(
+                      Text('     Welcome ${widget.email.toString().substring(0,10)}\n Please mark your attendance.',style: TextStyle(
                           fontSize: 18,
-                          color: Colors.black,fontFamily: 'Roboto',
+                          color: Colors.black,fontFamily: 'Robo++to',
                           fontWeight:FontWeight.bold),),
                       Padding(
                         padding: const EdgeInsets.all(28.0),
@@ -109,10 +110,10 @@ class _first_pageState extends State<first_page> {
                       ),
                       Center(child: ElevatedButton(style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blueGrey,
-
-                      ),onPressed:
+                    ),onPressed:
                       dateController.text.isEmpty?null:(){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>LoggedIn(emails: widget.email,textsss: widget.texts,selectedDate: dateController.text,
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>LoggedIn(emails: widget.email,
+                          textsss: widget.texts,selectedDate: dateController.text,
                         )));
                       }, child: Text("Mark Your Attendance",style: TextStyle(
                           color: Colors.white,
@@ -140,6 +141,7 @@ class _first_pageState extends State<first_page> {
       setState(() {
         dateController.text = DateFormat('yyyy-MM-dd').format(picked);
       });
+
     }
   }
 }

@@ -131,6 +131,7 @@ class _AdminAttendanceState extends State<AdminAttendance> {
                 final attendanceStatus = data['Attendance'] ?? 'Unknown';
                 final imagePath = data['imagepath'];
                 final mail=data['Email'];
+                final time=data['Time'];
 
                 return Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -149,7 +150,9 @@ class _AdminAttendanceState extends State<AdminAttendance> {
                       title: Column(
                         children: [
                           Text('Date: $date'),
-                          Text(mail.toString().substring(0,10)),
+                          Text(mail.length >= 10 ? mail.substring(0, 10) : mail),
+                          Text(time),
+
                         ],
                       ),
                       subtitle: Center(child: Text('Attendance: $attendanceStatus')),

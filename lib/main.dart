@@ -360,11 +360,10 @@ class _adminlogState extends State<adminlog> {
         password: password,
       );
 
-      // Save email to SharedPreferences
+
       SharedPreferences preferences = await SharedPreferences.getInstance();
       await preferences.setString("email", email);
 
-      // Navigate to the first page
       if(email=='admin@gmail.com'&& password=='Employee') {
         Navigator.pushReplacement(
           context,
